@@ -11,6 +11,7 @@ public class MoverController : MonoBehaviour
 
     public BoxController box;
     public MoverController otherMover;
+    public GameController game;
 
     new private Rigidbody rigidbody;
     private Vector3 direction = Vector3.zero;
@@ -97,6 +98,11 @@ public class MoverController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (game.gameIsOver)
+        {
+            return;
+        }
+
         if (moveForce.magnitude > maxSpeed)
         {
             moveForce = Vector3.Normalize(moveForce) * maxSpeed;
@@ -128,13 +134,12 @@ public class MoverController : MonoBehaviour
         }
 
         moveForce /= drag;
-
-
     }
 
+    /*
     void OnCollisionStay(Collision collision)
     {
-        Debug.Log("asdasd");
+        Debug.Log(collision.collider.tag);
         if (collision.collider.tag == "Wall")
         {
             Vector3 normal = collision.contacts[0].normal;
@@ -145,6 +150,7 @@ public class MoverController : MonoBehaviour
             }
         }
     }
+    */
 
     void push(Vector3 force)
     {

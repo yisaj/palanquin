@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    private float width;
-    private float height = 1;
+    [System.NonSerialized]
+    public float width;
+    [System.NonSerialized]
+    public float height = 1;
 
     void Awake()
     {

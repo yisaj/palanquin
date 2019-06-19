@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BoxController : MonoBehaviour
 {
-    public GameObject leftMover;
-    public GameObject rightMover;
+    public GameController game;
+    public MoverController leftMover;
+    public MoverController rightMover;
 
     public float area = 3f;
     public float minWidth = 1f;
@@ -22,6 +24,9 @@ public class BoxController : MonoBehaviour
     {
         squareSide = Mathf.Sqrt(area);
         maxLength = area / minWidth;
+
+        Physics.IgnoreCollision(GetComponent<Collider>(), leftMover.GetComponent<Collider>());
+        Physics.IgnoreCollision(GetComponent<Collider>(), rightMover.GetComponent<Collider>());
     }
 
     // Start is called before the first frame update
@@ -56,8 +61,19 @@ public class BoxController : MonoBehaviour
         transform.position = leftMover.transform.position - gap / 2f;
     }
 
-    void eatDot()
+    public void eatDot()
     {
         area += dotIncrement;
+        squareSide = Mathf.Sqrt(area);
+        maxLength = area / minWidth;
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        Collider other = collision.collider;
+        if (other.tag == "Wall" || other.tag == "BadDot")
+        {
+            game.GameOver();
+        }
     }
 }
