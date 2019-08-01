@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 911848449714840054}
   m_Layer: 0
   m_Name: GoodDot
-  m_TagString: Untagged
+  m_TagString: GoodDot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,7 +110,9 @@ MonoBehaviour:
   initialPos: {x: 0, y: 0, z: 0}
   left: 0
   entered: 0
+  phase: 0
   distanceLeft: 0
+  game: {fileID: 0}
 --- !u!54 &911848449714840054
 Rigidbody:
   m_ObjectHideFlags: 0

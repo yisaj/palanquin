@@ -70,11 +70,6 @@ public class GoodDotController : MonoBehaviour
         if (other.tag == "Wall" && phase == 1)
         {
             phase = 2;
-        } else if (other.tag == "Box")
-        {
-            BoxController box = other.GetComponent<BoxController>();
-            box.eatDot();
-            Destroy(gameObject);
         }
     }
 }

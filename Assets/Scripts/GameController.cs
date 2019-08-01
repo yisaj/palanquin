@@ -20,6 +20,8 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameIsOver) { return; }
+
         if (currentGoodDot == null)
         {
             currentGoodDot = SpawnGoodDot();
@@ -53,7 +55,6 @@ public class GameController : MonoBehaviour
                 position = new Vector3(level.width / -2f - goodDot.carryThrough, dotHeight, Random.Range(-halfRange, halfRange));
                 break;
         }
-        Debug.Log(rotation);
         GoodDotController dot = Instantiate(goodDot, position, rotation);
         dot.game = this;
         return dot;
@@ -61,6 +62,8 @@ public class GameController : MonoBehaviour
 
     void SpawnBadDot()
     {
+        if (gameIsOver) { return; }
+
         Vector3 position = new Vector3();
         Quaternion rotation = new Quaternion();
         float halfRange;
@@ -86,7 +89,6 @@ public class GameController : MonoBehaviour
                 position = new Vector3(level.width / -2f - badDot.carryThrough, dotHeight, Random.Range(-halfRange, halfRange));
                 break;
         }
-        Debug.Log(rotation);
         BadDotController dot = Instantiate(badDot, position, rotation);
         dot.game = this;
     }

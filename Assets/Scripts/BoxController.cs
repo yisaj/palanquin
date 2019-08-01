@@ -8,6 +8,7 @@ public class BoxController : MonoBehaviour
     public GameController game;
     public MoverController leftMover;
     public MoverController rightMover;
+    private ShatterableCubeController shatterScript;
 
     public float area = 3f;
     public float minWidth = 1f;
@@ -27,6 +28,8 @@ public class BoxController : MonoBehaviour
 
         Physics.IgnoreCollision(GetComponent<Collider>(), leftMover.GetComponent<Collider>());
         Physics.IgnoreCollision(GetComponent<Collider>(), rightMover.GetComponent<Collider>());
+
+        shatterScript = GetComponent<ShatterableCubeController>();
     }
 
     // Start is called before the first frame update
@@ -51,7 +54,7 @@ public class BoxController : MonoBehaviour
             length = squareSide;
             width = squareSide;
         }
-        transform.localScale = new Vector3(length, 1, width);
+        transform.localScale = new Vector3(length, transform.localScale.y, width);
 
         Vector3 gap = leftMover.transform.position - rightMover.transform.position;
 
@@ -61,19 +64,26 @@ public class BoxController : MonoBehaviour
         transform.position = leftMover.transform.position - gap / 2f;
     }
 
-    public void eatDot()
-    {
-        area += dotIncrement;
-        squareSide = Mathf.Sqrt(area);
-        maxLength = area / minWidth;
-    }
-
     public void OnCollisionEnter(Collision collision)
     {
         Collider other = collision.collider;
+        /*for (int i = 0; i < collision.contactCount; i++)
+        {
+            Debug.Log("CONTACT");
+            Debug.Log(collision.GetContact(i).point);
+            Debug.Log(collision.GetContact(i).normal);
+        }*/
+
         if (other.tag == "Wall" || other.tag == "BadDot")
         {
+            shatterScript.Shatter(collision.GetContact(0));
             game.GameOver();
+        } else if (other.tag == "GoodDot")
+        {
+            area += dotIncrement;
+            squareSide = Mathf.Sqrt(area);
+            maxLength = area / minWidth;
+            Destroy(other.gameObject);
         }
     }
 }
